@@ -1,0 +1,149 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="10117" systemVersion="15E65" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="i7t-76-jST">
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="10085"/>
+        <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
+        <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
+    </dependencies>
+    <scenes>
+        <!--View Controller-->
+        <scene sceneID="tne-QT-ifu">
+            <objects>
+                <viewController id="BYZ-38-t0r" customClass="ViewController" customModule="VKAdAnaliser" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="y3c-jy-aDJ"/>
+                        <viewControllerLayoutGuide type="bottom" id="wfy-db-euE"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="8bC-Xf-vdC">
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <pickerView hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="m9p-99-uNM">
+                                <rect key="frame" x="0.0" y="288" width="600" height="200"/>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="200" id="NfA-Fc-6wE"/>
+                                </constraints>
+                            </pickerView>
+                            <button hidden="YES" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="mrx-7I-Obe">
+                                <rect key="frame" x="200" y="526" width="200" height="40"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="40" id="6Qn-FA-Eem"/>
+                                    <constraint firstAttribute="width" constant="200" id="LiF-zF-oXE"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="17"/>
+                                <state key="normal" title="Start analysis"/>
+                                <connections>
+                                    <action selector="startPressed:" destination="BYZ-38-t0r" eventType="touchUpInside" id="6g3-RF-LOM"/>
+                                </connections>
+                            </button>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Choose category:" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="fu7-r5-Rg4">
+                                <rect key="frame" x="20" y="257" width="560" height="21"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="21" id="AG2-In-6W4"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="19"/>
+                                <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="tenpLogo" translatesAutoresizingMaskIntoConstraints="NO" id="wLC-r9-xWC">
+                                <rect key="frame" x="216.5" y="69" width="167" height="167"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" secondItem="wLC-r9-xWC" secondAttribute="height" multiplier="1:1" id="5Uj-ve-l5K"/>
+                                </constraints>
+                            </imageView>
+                        </subviews>
+                        <color key="backgroundColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="fu7-r5-Rg4" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leadingMargin" id="0Zc-p0-meI"/>
+                            <constraint firstItem="m9p-99-uNM" firstAttribute="centerY" secondItem="8bC-Xf-vdC" secondAttribute="centerY" id="7kx-z4-wj8"/>
+                            <constraint firstItem="wfy-db-euE" firstAttribute="top" secondItem="mrx-7I-Obe" secondAttribute="bottom" constant="34" id="AP3-IL-KRH"/>
+                            <constraint firstItem="wLC-r9-xWC" firstAttribute="top" secondItem="y3c-jy-aDJ" secondAttribute="bottom" constant="5" id="BHq-J5-Ndo"/>
+                            <constraint firstItem="m9p-99-uNM" firstAttribute="top" secondItem="fu7-r5-Rg4" secondAttribute="bottom" constant="10" id="NIn-By-mTu"/>
+                            <constraint firstItem="wLC-r9-xWC" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="NK1-8n-zaa"/>
+                            <constraint firstItem="m9p-99-uNM" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leadingMargin" constant="-20" id="PGm-gY-XiZ"/>
+                            <constraint firstItem="fu7-r5-Rg4" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="V6C-gI-C3s"/>
+                            <constraint firstItem="fu7-r5-Rg4" firstAttribute="top" secondItem="wLC-r9-xWC" secondAttribute="bottom" constant="21" id="Vqj-yb-48b"/>
+                            <constraint firstItem="mrx-7I-Obe" firstAttribute="top" secondItem="m9p-99-uNM" secondAttribute="bottom" constant="38" id="dUZ-Ie-fYi"/>
+                            <constraint firstItem="m9p-99-uNM" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="egy-db-rej"/>
+                            <constraint firstItem="mrx-7I-Obe" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="kpV-Tj-6yj"/>
+                        </constraints>
+                        <variation key="default">
+                            <mask key="constraints">
+                                <exclude reference="7kx-z4-wj8"/>
+                            </mask>
+                        </variation>
+                    </view>
+                    <navigationItem key="navigationItem" id="cd0-yU-O2S">
+                        <barButtonItem key="backBarButtonItem" title="Back" id="one-ag-hWy"/>
+                    </navigationItem>
+                    <connections>
+                        <outlet property="picker" destination="m9p-99-uNM" id="JqB-VI-6NY"/>
+                        <outlet property="startBtn" destination="mrx-7I-Obe" id="3TL-nK-a70"/>
+                        <segue destination="dXu-3O-dA6" kind="show" identifier="statistics" id="lDl-lO-Hgw"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1137" y="399"/>
+        </scene>
+        <!--Statistics DetailVC-->
+        <scene sceneID="DB4-yh-paD">
+            <objects>
+                <viewController id="dXu-3O-dA6" customClass="StatisticsDetailVC" customModule="VKAdAnaliser" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="6wS-ef-pzN"/>
+                        <viewControllerLayoutGuide type="bottom" id="IyW-Ea-nrn"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="WrB-f6-RBM">
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="34b-Y3-Kbu">
+                                <rect key="frame" x="0.0" y="64" width="600" height="536"/>
+                            </scrollView>
+                        </subviews>
+                        <color key="backgroundColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="34b-Y3-Kbu" firstAttribute="top" secondItem="6wS-ef-pzN" secondAttribute="bottom" id="4gh-wI-SNm"/>
+                            <constraint firstItem="34b-Y3-Kbu" firstAttribute="leading" secondItem="WrB-f6-RBM" secondAttribute="leadingMargin" constant="-20" id="Jlh-cS-T0F"/>
+                            <constraint firstItem="IyW-Ea-nrn" firstAttribute="top" secondItem="34b-Y3-Kbu" secondAttribute="bottom" id="afl-kl-ppE"/>
+                            <constraint firstAttribute="trailingMargin" secondItem="34b-Y3-Kbu" secondAttribute="trailing" constant="-20" id="cds-A7-yL4"/>
+                        </constraints>
+                    </view>
+                    <navigationItem key="navigationItem" id="pSv-SX-zbr">
+                        <barButtonItem key="backBarButtonItem" title="Back" id="eew-jO-Mft"/>
+                    </navigationItem>
+                    <connections>
+                        <outlet property="scroller" destination="34b-Y3-Kbu" id="udI-mN-fIr"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="cgn-sX-e3v" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1889" y="399"/>
+        </scene>
+        <!--Navigation Proto-->
+        <scene sceneID="12E-uF-W0j">
+            <objects>
+                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="i7t-76-jST" customClass="NavigationProto" customModule="VKAdAnaliser" customModuleProvider="target" sceneMemberID="viewController">
+                    <toolbarItems/>
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="TrA-Ta-HwT">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </navigationBar>
+                    <nil name="viewControllers"/>
+                    <connections>
+                        <segue destination="BYZ-38-t0r" kind="relationship" relationship="rootViewController" id="iK0-03-GRV"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="3iz-Yt-PRB" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="399" y="391"/>
+        </scene>
+    </scenes>
+    <resources>
+        <image name="tenpLogo" width="397" height="397"/>
+    </resources>
+    <color key="tintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+</document>

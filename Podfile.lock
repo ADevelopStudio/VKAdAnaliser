@@ -1,0 +1,23 @@
+PODS:
+  - Alamofire (3.3.1)
+  - Charts (2.2.4):
+    - Charts/Core (= 2.2.4)
+  - Charts/Core (2.2.4)
+  - KVNProgress (2.2.4)
+  - VK-ios-sdk (1.3.16)
+
+DEPENDENCIES:
+  - Alamofire
+  - Charts
+  - KVNProgress
+  - VK-ios-sdk
+
+SPEC CHECKSUMS:
+  Alamofire: 369bc67b6f5ac33ded3648d7bd21c5bfb91c2ecc
+  Charts: a9e735c83c6d376ade20f6612dcf0ba217394a49
+  KVNProgress: 541edcea5a1fef592aceac8d791a410d38cb499d
+  VK-ios-sdk: 7804776d9947cf9b6f54a259fac589b9212156f1
+
+PODFILE CHECKSUM: b2a093f5f40087a5ea865bae8d8c738674ca3535
+
+COCOAPODS: 1.0.0.beta.2
