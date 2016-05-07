@@ -22,3 +22,5 @@ let screenHeight:CGFloat = UIScreen.mainScreen().bounds.height
 
 let originalBlue: UIColor = UIColor(red: 83.0/255.0, green: 142.0/255.0, blue: 214.0/255.0, alpha: 1.0)
 let originalDarkGrey: UIColor = UIColor(red: 67.0/255.0, green: 74.0/255.0, blue: 84.0/255.0, alpha: 1.0)
+
+var englishDict: Array<DictoraryElement> = []

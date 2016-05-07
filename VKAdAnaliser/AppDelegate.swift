@@ -12,9 +12,7 @@ import KVNProgress
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
-
     var window: UIWindow?
-
 
     func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
         
@@ -27,11 +25,26 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         loadingConfig.successColor = originalDarkGrey
         loadingConfig.errorColor = UIColor.redColor()
         loadingConfig.statusFont = UIFont.systemFontOfSize(20)
-        loadingConfig.minimumSuccessDisplayTime = 3
-        loadingConfig.minimumErrorDisplayTime = 3
+        loadingConfig.minimumSuccessDisplayTime = 2
+        loadingConfig.minimumErrorDisplayTime = 2
         KVNProgress.setConfiguration(loadingConfig)
         
+        fillEnRuDict()
         return true
+    }
+    
+    func fillEnRuDict() {
+        if let path = NSBundle.mainBundle().pathForResource("1000", ofType: "JSON") {
+            if let data = NSData(contentsOfFile: path) {
+                let json = JSON(data: data, options: .MutableContainers, error: nil)
+                // print("jsonData:\(json)")
+                //  print(json.arrayValue.count)
+                englishDict = []
+                for dict in json.arrayValue{
+                    englishDict.append(DictoraryElement(json: dict))
+                }
+            }
+        }
     }
 
     func application(app: UIApplication, openURL url: NSURL, options: [String : AnyObject]) -> Bool {

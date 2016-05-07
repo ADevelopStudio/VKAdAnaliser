@@ -21,6 +21,7 @@
 		62760DC31CDC60F20036DF52 /* MyExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 62760DC21CDC60F20036DF52 /* MyExtensions.swift */; };
 		62760DC71CDC665A0036DF52 /* NavigationProto.swift in Sources */ = {isa = PBXBuildFile; fileRef = 62760DC61CDC665A0036DF52 /* NavigationProto.swift */; };
 		62760DCB1CDCC6DB0036DF52 /* StatisticsDetailVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 62760DCA1CDCC6DB0036DF52 /* StatisticsDetailVC.swift */; };
+		62F1660F1CDD9DCE00C42057 /* 1000.JSON in Resources */ = {isa = PBXBuildFile; fileRef = 62F1660E1CDD9DCE00C42057 /* 1000.JSON */; };
 		C7B5457017823C0E9E431F27 /* Pods_VKAdAnaliser.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 947C8075C0A562FC8034335B /* Pods_VKAdAnaliser.framework */; };
 /* End PBXBuildFile section */
 
@@ -43,6 +44,7 @@
 		62760DC21CDC60F20036DF52 /* MyExtensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MyExtensions.swift; sourceTree = "<group>"; };
 		62760DC61CDC665A0036DF52 /* NavigationProto.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NavigationProto.swift; sourceTree = "<group>"; };
 		62760DCA1CDCC6DB0036DF52 /* StatisticsDetailVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StatisticsDetailVC.swift; sourceTree = "<group>"; };
+		62F1660E1CDD9DCE00C42057 /* 1000.JSON */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = 1000.JSON; sourceTree = "<group>"; };
 		947C8075C0A562FC8034335B /* Pods_VKAdAnaliser.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_VKAdAnaliser.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		C21474EAA8B0217C76B22ED8 /* Pods-VKAdAnaliser.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-VKAdAnaliser.debug.xcconfig"; path = "Pods/Target Support Files/Pods-VKAdAnaliser/Pods-VKAdAnaliser.debug.xcconfig"; sourceTree = "<group>"; };
 		CE8A9A8ADCA78473DF23A89E /* Pods-VKAdAnaliser.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-VKAdAnaliser.release.xcconfig"; path = "Pods/Target Support Files/Pods-VKAdAnaliser/Pods-VKAdAnaliser.release.xcconfig"; sourceTree = "<group>"; };
@@ -107,6 +109,7 @@
 		62760DB11CDC5AB70036DF52 /* Support files */ = {
 			isa = PBXGroup;
 			children = (
+				62F1660E1CDD9DCE00C42057 /* 1000.JSON */,
 				62760DC61CDC665A0036DF52 /* NavigationProto.swift */,
 				62760DC21CDC60F20036DF52 /* MyExtensions.swift */,
 				62760DBA1CDC60180036DF52 /* SwiftyJSON.swift */,
@@ -206,6 +209,7 @@
 			files = (
 				626B0B531CDC54990058A964 /* LaunchScreen.storyboard in Resources */,
 				626B0B501CDC54990058A964 /* Assets.xcassets in Resources */,
+				62F1660F1CDD9DCE00C42057 /* 1000.JSON in Resources */,
 				626B0B4E1CDC54990058A964 /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

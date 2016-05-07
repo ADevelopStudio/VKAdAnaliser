@@ -69,11 +69,17 @@ class ViewController: UIViewController {
     var categories = Array<DZCategory>()
     @IBOutlet weak var picker: UIPickerView!
     @IBOutlet weak var startBtn: UIButton!
+    @IBOutlet weak var chooseLabel: UILabel!
 
+    @IBOutlet weak var loading: UIActivityIndicatorView!
+    
     var numOfDownloadedUserSets = 0
     var users = Array<String>()
     var collectedDataSet = Array<User>()
-
+    var reasonsToRemove = Dictionary<String,Int>()
+    var numberOfOperation:CGFloat = 0
+    var numberOfOperationCompleted:CGFloat = 0
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         VKSdk.initializeWithAppId("5450149").registerDelegate(self)
@@ -85,7 +91,8 @@ class ViewController: UIViewController {
         startBtn.layer.borderWidth = 2
         startBtn.clipsToBounds = true
         startBtn.layer.cornerRadius =  startBtn.layer.bounds.height/2
-        
+        title =  "VKAdAnaliser \(NSBundle.mainBundle().infoDictionary!["CFBundleShortVersionString"]!)"
+
         setActive(false)
         if defaults.boolForKey("alreadyLaunched") == true {
             vkConnect()
@@ -95,7 +102,8 @@ class ViewController: UIViewController {
     }
 
     func setActive(isActive:Bool){
-        title = isActive ? "VKAdAnaliser \(NSBundle.mainBundle().infoDictionary!["CFBundleShortVersionString"]!)" : "Connecting to VK..."
+        loading.hidden = isActive
+        chooseLabel.text =  isActive ? "Choose category:" : "Connecting to VK..."
         if isActive{
             trackVisitor()
             KVNProgress.dismiss()
@@ -170,7 +178,6 @@ class ViewController: UIViewController {
     
     
     func vkConnect(){
-        KVNProgress.showWithStatus("Connection")
         if !VKSdk.isLoggedIn() {
             VKSdk.wakeUpSession(VKSCOPE, completeBlock: ({
                 (state, error) in
@@ -205,6 +212,8 @@ class ViewController: UIViewController {
     }
     
     func getSuggestions()  {
+        KVNProgress.showWithStatus("Loading categories")
+
             let request =  VKRequest(method: "ads.getSuggestions", parameters: ["lang": "ru", "section":"interest_categories"])
             request.executeWithResultBlock({ response in
                 print("Success getSuggestions")
@@ -214,9 +223,10 @@ class ViewController: UIViewController {
                 for element in metadata.arrayValue {
                     self.categories.append(DZCategory(json: element))
                 }
-                print(metadata)
+//                print(metadata)
                 print("self.categories.count = \(self.categories.count)")
                 self.picker.reloadAllComponents()
+                self.picker.selectRow(metadata.arrayValue.count/2, inComponent: 0, animated: true)
                 self.setActive(true)
                 }, errorBlock: {error in
                     self.showVKError(error.vkError)
@@ -227,10 +237,12 @@ class ViewController: UIViewController {
     
     @IBAction func startPressed(sender: AnyObject) {
         KVNProgress.showWithStatus("Collecting data")
-        translateEnToRu(categories[picker.selectedRowInComponent(0)].name)
+        self.prepareToSearch(categories[picker.selectedRowInComponent(0)].name)
+//TODO
+//        translateEnToRu(categories[picker.selectedRowInComponent(0)].name)
     }
 
-    
+
     func translateEnToRu(str:String) {
         let preparedStr = prepareToWeb(str)
         Alamofire.request(.POST, "https://translate.yandex.net/api/v1.5/tr.json/translate?key=trnsl.1.1.20160506T134111Z.4dd20cfcbd113ddf.a694898a4b4162d5c87616fb823ba675f6328278&text=\(preparedStr)&lang=en-ru", parameters: nil, encoding: .JSON)
@@ -251,6 +263,7 @@ class ViewController: UIViewController {
         }
     }
     
+    
     func prepareToSearch(text: String) {
         //Searching top 10 (by number of user's visitings per day) social groups
         /*
@@ -263,7 +276,7 @@ class ViewController: UIViewController {
          5 — ratio: num of post per one user .
          */
         prepareToWeb("searchTExt  = \(text)")
-        searchGroups(5,sortType: 2, text: text)
+        searchGroups(1, sortType: 3, text: text)
     }
     
     func prepareToWeb(input: String) -> String {
@@ -274,6 +287,10 @@ class ViewController: UIViewController {
                 }
             }
             return tempStr
+    }
+    func oneTackCompleted()  {
+        numberOfOperationCompleted += 1
+        KVNProgress.updateProgress(numberOfOperationCompleted/numberOfOperation, animated: true)
     }
     
     func searchGroups(numOfGroups:Int, sortType:Int, text: String) {
@@ -286,8 +303,12 @@ class ViewController: UIViewController {
             let metadata = JSON(response.json)
             print(metadata)
             self.numOfDownloadedUserSets = metadata["items"].arrayValue.count
+            self.numberOfOperation = CGFloat(self.numOfDownloadedUserSets * 3)
             for element in metadata["items"].arrayValue {
                 self.getNumberUsersInGroup(DZCategory(json: element).id)
+            }
+            if metadata["items"].arrayValue.count == 0 {
+                KVNProgress.showErrorWithStatus("Nothing found")
             }
             }, errorBlock: {error in
                 self.showVKError(error.vkError)
@@ -299,15 +320,18 @@ class ViewController: UIViewController {
     func getNumberUsersInGroup(id:String)  {
         let request =  VKRequest(method: "groups.getById", parameters: ["group_id":id, "fields":"members_count,screen_name"])
         request.executeWithResultBlock({ response in
-            print("Success getNumberUsersInGroup \(id)")
             let metadata = JSON(response.json)
             let ar = metadata.arrayValue
-            if ar.count > 0 && ar.first!["members_count"].intValue > 2000 {
-                self.getUsersInGroup(id, offset: ar.first!["members_count"].intValue/2)
+            self.oneTackCompleted()
+            print("Success getNumberUsersInGroup \(id) -> \(ar.count > 0 ? ar.first!["members_count"].intValue  : 0)")
+            if ar.count > 0 && ar.first!["members_count"].intValue > 2500 {
+                self.getUsersInGroup(id, offset: ar.first!["members_count"].intValue - 1500)
             } else {
                 self.getUsersInGroup(id)
             }
             }, errorBlock: {error in
+                self.oneTackCompleted()
+                self.getUsersInGroup(id)
                 self.showVKError(error.vkError)
                 print("error \(error)")
         })
@@ -317,6 +341,7 @@ class ViewController: UIViewController {
         let request =  VKRequest(method: "groups.getMembers", parameters: ["group_id":id, "offset": "\(offset)", "count":"1000", "sort" :"id_desc"])
         request.executeWithResultBlock({ response in
             print("Success groups.getMembers \(id)")
+            self.oneTackCompleted()
             let metadata = JSON(response.json)
             var usersOfThatGroup = Array<String>()
             for user in metadata["items"].arrayValue {
@@ -327,6 +352,7 @@ class ViewController: UIViewController {
             }
             self.getUsersDetail(usersOfThatGroup)
             }, errorBlock: {error in
+                self.oneTackCompleted()
                 self.showVKError(error.vkError)
                 print("error \(error)")
         })
@@ -344,15 +370,28 @@ class ViewController: UIViewController {
     
     func getUsersDetail(ids:Array<String>)  {
         let request =  VKRequest(method: "users.get", parameters: ["user_ids":ids.joinWithSeparator(","),
-            "fields":"sex, bdate, city, country, occupation, relation, personal, activities, interests" ])
+            "fields":"sex, last_seen, followers_count, bdate, city, country, occupation, relation, personal, activities, interests" ])
         request.executeWithResultBlock({ response in
             let metadata = JSON(response.json)
+            self.oneTackCompleted()
             print("Success getUsersDetail \(ids.count) -> \( metadata.arrayValue.count)")
+//            print(metadata)
             for user in metadata.arrayValue {
-                self.collectedDataSet.append(User(json: user))
+                let tempUser = User(json: user)
+                let isValid = tempUser.isValid()
+                if isValid.valid {
+                    self.collectedDataSet.append(tempUser)
+                } else {
+                    if self.reasonsToRemove[isValid.reason] != nil {
+                        self.reasonsToRemove[isValid.reason]!  += 1
+                    } else {
+                        self.reasonsToRemove[isValid.reason] = 1
+                    }
+                }
             }
             self.isAllUsersDownload()
             }, errorBlock: {error in
+                self.oneTackCompleted()
                 self.showVKError(error.vkError)
                 print("error \(error)")
                 self.isAllUsersDownload()
@@ -362,6 +401,7 @@ class ViewController: UIViewController {
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
         if  let destinationVC = segue.destinationViewController as? StatisticsDetailVC {
             destinationVC.collectedDataSet = collectedDataSet
+            destinationVC.reasonsToRemove = reasonsToRemove
         }
     }
     
