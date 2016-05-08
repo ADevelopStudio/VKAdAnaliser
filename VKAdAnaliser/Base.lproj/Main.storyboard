@@ -108,14 +108,14 @@
                         <viewControllerLayoutGuide type="bottom" id="IyW-Ea-nrn"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="WrB-f6-RBM">
-                        <rect key="frame" x="0.0" y="0.0" width="600" height="1600"/>
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="2600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="34b-Y3-Kbu">
-                                <rect key="frame" x="0.0" y="64" width="600" height="1536"/>
+                                <rect key="frame" x="0.0" y="64" width="600" height="2536"/>
                                 <subviews>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="xo2-nJ-fI4" customClass="PieChartView" customModule="Charts">
-                                        <rect key="frame" x="8" y="280" width="584" height="584"/>
+                                        <rect key="frame" x="10" y="250" width="580" height="580"/>
                                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                         <constraints>
                                             <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="371" id="2Y4-Lf-sdt"/>
@@ -130,21 +130,21 @@
                                         </variation>
                                     </view>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="yoD-Rt-Qaf" customClass="HorizontalBarChartView" customModule="Charts">
-                                        <rect key="frame" x="0.0" y="-60" width="600" height="150"/>
+                                        <rect key="frame" x="0.0" y="-60" width="600" height="130"/>
                                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                         <constraints>
-                                            <constraint firstAttribute="height" constant="150" id="KOd-ox-uzp"/>
+                                            <constraint firstAttribute="height" constant="130" id="KOd-ox-uzp"/>
                                         </constraints>
                                     </view>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="E1a-IX-2ao" customClass="HorizontalBarChartView" customModule="Charts">
-                                        <rect key="frame" x="0.0" y="140" width="600" height="90"/>
+                                        <rect key="frame" x="0.0" y="120" width="600" height="80"/>
                                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                         <constraints>
-                                            <constraint firstAttribute="height" constant="90" id="vpx-3h-1P5"/>
+                                            <constraint firstAttribute="height" constant="80" id="vpx-3h-1P5"/>
                                         </constraints>
                                     </view>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="User genres:" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="to5-ac-Mia">
-                                        <rect key="frame" x="20" y="111" width="560" height="23"/>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Users' genres:" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="to5-ac-Mia">
+                                        <rect key="frame" x="20" y="96" width="560" height="21"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="21" id="8ne-jX-yju"/>
                                             <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="21" id="Jes-uO-YGD"/>
@@ -158,8 +158,8 @@
                                             </mask>
                                         </variation>
                                     </label>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="User ages:" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Cmo-Ek-oRE">
-                                        <rect key="frame" x="20" y="246" width="560" height="23"/>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Users' ages:" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Cmo-Ek-oRE">
+                                        <rect key="frame" x="20" y="229" width="560" height="21"/>
                                         <constraints>
                                             <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="21" id="GMD-lv-tgk"/>
                                             <constraint firstAttribute="height" constant="21" id="wxk-1F-Xq0"/>
@@ -173,34 +173,116 @@
                                             </mask>
                                         </variation>
                                     </label>
+                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="St2-7Q-BCc" customClass="PieChartView" customModule="Charts">
+                                        <rect key="frame" x="10" y="910" width="580" height="580"/>
+                                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                        <constraints>
+                                            <constraint firstAttribute="width" secondItem="St2-7Q-BCc" secondAttribute="height" multiplier="1:1" id="VSR-eM-z2D"/>
+                                            <constraint firstAttribute="height" constant="371" id="lYc-kk-seF"/>
+                                            <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="371" id="sWe-ZZ-Ik8"/>
+                                        </constraints>
+                                        <variation key="default">
+                                            <mask key="constraints">
+                                                <exclude reference="sWe-ZZ-Ik8"/>
+                                                <exclude reference="lYc-kk-seF"/>
+                                            </mask>
+                                        </variation>
+                                    </view>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Users' relationships:" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="kUS-LY-amy">
+                                        <rect key="frame" x="20" y="881" width="560" height="21"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="21" id="Ohl-B8-jWe"/>
+                                            <constraint firstAttribute="height" constant="21" id="qwM-Hs-SMr"/>
+                                        </constraints>
+                                        <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="19"/>
+                                        <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                        <nil key="highlightedColor"/>
+                                        <variation key="default">
+                                            <mask key="constraints">
+                                                <exclude reference="Ohl-B8-jWe"/>
+                                            </mask>
+                                        </variation>
+                                    </label>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Top 10 Users' interests:" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="j9R-NX-VKi">
+                                        <rect key="frame" x="20" y="1526" width="560" height="23"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="21" id="mAC-Y3-kmY"/>
+                                            <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="21" id="z6O-jw-jqi"/>
+                                        </constraints>
+                                        <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="19"/>
+                                        <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                        <nil key="highlightedColor"/>
+                                        <variation key="default">
+                                            <mask key="constraints">
+                                                <exclude reference="z6O-jw-jqi"/>
+                                            </mask>
+                                        </variation>
+                                    </label>
+                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="S9C-fl-0sp" customClass="HorizontalBarChartView" customModule="Charts">
+                                        <rect key="frame" x="10" y="1563" width="580" height="580"/>
+                                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="371" id="3jM-yN-VdZ"/>
+                                            <constraint firstAttribute="width" secondItem="S9C-fl-0sp" secondAttribute="height" multiplier="1:1" id="7pK-WB-yt0"/>
+                                            <constraint firstAttribute="height" constant="371" id="J2I-Zt-h0x"/>
+                                        </constraints>
+                                        <variation key="default">
+                                            <mask key="constraints">
+                                                <exclude reference="3jM-yN-VdZ"/>
+                                                <exclude reference="J2I-Zt-h0x"/>
+                                            </mask>
+                                        </variation>
+                                    </view>
                                 </subviews>
                                 <constraints>
                                     <constraint firstItem="xo2-nJ-fI4" firstAttribute="centerX" secondItem="34b-Y3-Kbu" secondAttribute="centerX" id="1BK-CS-1QR"/>
+                                    <constraint firstItem="St2-7Q-BCc" firstAttribute="width" secondItem="St2-7Q-BCc" secondAttribute="height" multiplier="1:1" id="1Ka-Up-kmJ"/>
+                                    <constraint firstAttribute="trailing" secondItem="j9R-NX-VKi" secondAttribute="trailing" constant="20" id="30P-U3-lFK"/>
                                     <constraint firstItem="E1a-IX-2ao" firstAttribute="trailing" secondItem="yoD-Rt-Qaf" secondAttribute="trailing" id="3PD-zk-Tuy"/>
                                     <constraint firstAttribute="trailing" secondItem="yoD-Rt-Qaf" secondAttribute="trailing" id="64C-pC-KCW"/>
                                     <constraint firstItem="to5-ac-Mia" firstAttribute="centerX" secondItem="34b-Y3-Kbu" secondAttribute="centerX" id="6Hl-3c-7mF"/>
-                                    <constraint firstItem="xo2-nJ-fI4" firstAttribute="leading" secondItem="34b-Y3-Kbu" secondAttribute="leading" constant="8" id="GRM-97-j6K"/>
+                                    <constraint firstItem="S9C-fl-0sp" firstAttribute="leading" secondItem="St2-7Q-BCc" secondAttribute="leading" id="7sJ-am-3jS"/>
+                                    <constraint firstItem="St2-7Q-BCc" firstAttribute="trailing" secondItem="xo2-nJ-fI4" secondAttribute="trailing" id="DAc-Ih-8zB"/>
+                                    <constraint firstItem="xo2-nJ-fI4" firstAttribute="leading" secondItem="34b-Y3-Kbu" secondAttribute="leading" constant="10" id="GRM-97-j6K"/>
                                     <constraint firstItem="yoD-Rt-Qaf" firstAttribute="leading" secondItem="34b-Y3-Kbu" secondAttribute="leading" id="Ggb-IC-bnh"/>
                                     <constraint firstItem="xo2-nJ-fI4" firstAttribute="top" secondItem="E1a-IX-2ao" secondAttribute="bottom" constant="50" id="GoZ-de-9Kz"/>
                                     <constraint firstItem="yoD-Rt-Qaf" firstAttribute="top" secondItem="34b-Y3-Kbu" secondAttribute="top" constant="-60" id="Gzq-5r-Eax"/>
+                                    <constraint firstItem="S9C-fl-0sp" firstAttribute="trailing" secondItem="St2-7Q-BCc" secondAttribute="trailing" id="KzP-ge-j3O"/>
+                                    <constraint firstAttribute="trailing" secondItem="kUS-LY-amy" secondAttribute="trailing" constant="20" id="N11-AD-y4o"/>
                                     <constraint firstItem="xo2-nJ-fI4" firstAttribute="top" secondItem="34b-Y3-Kbu" secondAttribute="top" constant="140" id="Nee-ax-aZ1"/>
                                     <constraint firstItem="to5-ac-Mia" firstAttribute="leading" secondItem="34b-Y3-Kbu" secondAttribute="leading" constant="20" id="Q6Q-W7-a9w"/>
                                     <constraint firstItem="yoD-Rt-Qaf" firstAttribute="centerX" secondItem="xo2-nJ-fI4" secondAttribute="centerX" id="QrM-gF-sfe"/>
+                                    <constraint firstItem="kUS-LY-amy" firstAttribute="leading" secondItem="34b-Y3-Kbu" secondAttribute="leading" constant="20" id="RTj-9l-dMa"/>
                                     <constraint firstItem="E1a-IX-2ao" firstAttribute="top" secondItem="to5-ac-Mia" secondAttribute="bottom" constant="3" id="Srk-Dd-UZc"/>
                                     <constraint firstItem="xo2-nJ-fI4" firstAttribute="width" secondItem="xo2-nJ-fI4" secondAttribute="height" multiplier="1:1" id="T0H-Qu-Z5w"/>
+                                    <constraint firstItem="S9C-fl-0sp" firstAttribute="top" secondItem="j9R-NX-VKi" secondAttribute="bottom" constant="16" id="Y9c-PY-NPa"/>
+                                    <constraint firstItem="j9R-NX-VKi" firstAttribute="leading" secondItem="34b-Y3-Kbu" secondAttribute="leading" constant="20" id="Yt7-yd-Dqh"/>
+                                    <constraint firstAttribute="bottom" secondItem="St2-7Q-BCc" secondAttribute="bottom" constant="59" id="ak5-o0-frX"/>
+                                    <constraint firstItem="St2-7Q-BCc" firstAttribute="top" secondItem="kUS-LY-amy" secondAttribute="bottom" id="blO-hq-LNo"/>
                                     <constraint firstItem="Cmo-Ek-oRE" firstAttribute="trailing" secondItem="to5-ac-Mia" secondAttribute="trailing" id="c8J-iM-JVp"/>
+                                    <constraint firstItem="j9R-NX-VKi" firstAttribute="top" secondItem="St2-7Q-BCc" secondAttribute="bottom" constant="36" id="e0t-Cz-rej"/>
                                     <constraint firstItem="E1a-IX-2ao" firstAttribute="top" secondItem="yoD-Rt-Qaf" secondAttribute="bottom" constant="50" id="eGV-X8-6Fh"/>
+                                    <constraint firstItem="St2-7Q-BCc" firstAttribute="top" secondItem="xo2-nJ-fI4" secondAttribute="bottom" constant="80" id="guk-wD-qeD"/>
+                                    <constraint firstItem="St2-7Q-BCc" firstAttribute="top" secondItem="kUS-LY-amy" secondAttribute="bottom" constant="8" id="lcT-Az-ZHK"/>
                                     <constraint firstItem="xo2-nJ-fI4" firstAttribute="top" secondItem="Cmo-Ek-oRE" secondAttribute="bottom" id="mwB-C4-ULH"/>
                                     <constraint firstAttribute="bottom" secondItem="xo2-nJ-fI4" secondAttribute="bottom" constant="931" id="nhg-cs-HUu"/>
+                                    <constraint firstItem="St2-7Q-BCc" firstAttribute="leading" secondItem="xo2-nJ-fI4" secondAttribute="leading" id="oB8-qh-z4q"/>
                                     <constraint firstItem="xo2-nJ-fI4" firstAttribute="top" secondItem="yoD-Rt-Qaf" secondAttribute="bottom" constant="200" id="qum-GQ-gyQ"/>
                                     <constraint firstItem="Cmo-Ek-oRE" firstAttribute="leading" secondItem="to5-ac-Mia" secondAttribute="leading" id="uGq-hx-1c9"/>
+                                    <constraint firstItem="S9C-fl-0sp" firstAttribute="width" secondItem="S9C-fl-0sp" secondAttribute="height" multiplier="1:1" id="vWq-vR-BR9"/>
                                     <constraint firstItem="E1a-IX-2ao" firstAttribute="leading" secondItem="yoD-Rt-Qaf" secondAttribute="leading" id="x0F-RK-AQC"/>
+                                    <constraint firstAttribute="bottom" secondItem="St2-7Q-BCc" secondAttribute="bottom" constant="1059" id="ysg-MB-hn5"/>
                                 </constraints>
                                 <variation key="default">
                                     <mask key="constraints">
                                         <exclude reference="Nee-ax-aZ1"/>
                                         <exclude reference="T0H-Qu-Z5w"/>
+                                        <exclude reference="nhg-cs-HUu"/>
                                         <exclude reference="qum-GQ-gyQ"/>
+                                        <exclude reference="1Ka-Up-kmJ"/>
+                                        <exclude reference="ak5-o0-frX"/>
+                                        <exclude reference="blO-hq-LNo"/>
+                                        <exclude reference="vWq-vR-BR9"/>
                                     </mask>
                                 </variation>
                             </scrollView>
@@ -217,11 +299,13 @@
                         <barButtonItem key="backBarButtonItem" title="Back" id="eew-jO-Mft"/>
                     </navigationItem>
                     <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
-                    <size key="freeformSize" width="600" height="1600"/>
+                    <size key="freeformSize" width="600" height="2600"/>
                     <connections>
                         <outlet property="agesChart" destination="xo2-nJ-fI4" id="bmX-UE-Bal"/>
                         <outlet property="genresChart" destination="E1a-IX-2ao" id="vf5-7H-O1b"/>
+                        <outlet property="interestsChart" destination="S9C-fl-0sp" id="4DU-pg-dWK"/>
                         <outlet property="noiceData" destination="yoD-Rt-Qaf" id="3Le-dx-diR"/>
+                        <outlet property="relatioshipChart" destination="St2-7Q-BCc" id="3hV-jq-Ml0"/>
                         <outlet property="scroller" destination="34b-Y3-Kbu" id="udI-mN-fIr"/>
                     </connections>
                 </viewController>

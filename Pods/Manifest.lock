@@ -8,9 +8,19 @@ PODS:
 
 DEPENDENCIES:
   - Alamofire
-  - Charts
+  - Charts (from `https://github.com/danielgindi/Charts.git`, branch `master`)
   - KVNProgress
   - VK-ios-sdk
+
+EXTERNAL SOURCES:
+  Charts:
+    :branch: master
+    :git: https://github.com/danielgindi/Charts.git
+
+CHECKOUT OPTIONS:
+  Charts:
+    :commit: 8f82f60d4869434e4d9831bf237ac9161dee9039
+    :git: https://github.com/danielgindi/Charts.git
 
 SPEC CHECKSUMS:
   Alamofire: 369bc67b6f5ac33ded3648d7bd21c5bfb91c2ecc
@@ -18,6 +28,6 @@ SPEC CHECKSUMS:
   KVNProgress: 541edcea5a1fef592aceac8d791a410d38cb499d
   VK-ios-sdk: 7804776d9947cf9b6f54a259fac589b9212156f1
 
-PODFILE CHECKSUM: b2a093f5f40087a5ea865bae8d8c738674ca3535
+PODFILE CHECKSUM: cc234f15872e1c971e43c419b7693077ebe8c4f5
 
 COCOAPODS: 1.0.0.beta.2

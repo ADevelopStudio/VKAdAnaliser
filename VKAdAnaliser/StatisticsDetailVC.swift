@@ -14,12 +14,14 @@ class StatisticsDetailVC: UIViewController {
     var collectedDataSet = Array<User>()
     var reasonsToRemove = Dictionary<String,Int>()
 
+    @IBOutlet weak var interestsChart: HorizontalBarChartView!
     @IBOutlet weak var genresChart: HorizontalBarChartView!
     @IBOutlet weak var noiceData: HorizontalBarChartView!
     @IBOutlet weak var agesChart: PieChartView!
     @IBOutlet weak var relatioshipChart: PieChartView!
     @IBOutlet weak var platformChart: PieChartView!
     
+    var isAnalised = false
     @IBOutlet weak var scroller: UIScrollView!
     
     override func viewDidLoad() {
@@ -35,10 +37,9 @@ class StatisticsDetailVC: UIViewController {
         print("\nReasons to remove:")
         displaySortedDict(reasonsToRemove,needToShowPercentage: false)
         agesChart.noDataText = ""
-
         caltulateStat()
     }
-
+    
     func caltulateStat(){
         var occupation = Dictionary<String,Int>()
         var age = Dictionary<String,Int>()
@@ -135,7 +136,10 @@ class StatisticsDetailVC: UIViewController {
         drawNoiceDataChart()
         drawGenresDataChart(sex)
         
-        drawPieChart(agesChart, data: age)
+        self.drawBarChart(self.interestsChart, data: interests)
+        self.drawPieChart(self.agesChart, data: age, labelStr: " y.o. ")
+        self.drawPieChart(self.relatioshipChart, data: relation)
+    
     }
     
     func displaySortedDict(dict:Dictionary<String,Int>, needToShowPercentage:Bool = true)  {
@@ -155,7 +159,8 @@ class StatisticsDetailVC: UIViewController {
         var newDict = Dictionary<String,Int>()
         for (key, value) in dict {
             if value > (collectedDataSet.count / 100) && containsOnlyLetters(key) {
-               newDict[translateWorld(key)] = value
+                newDict[key] = value
+//                newDict[translateWorld(key)] = value
             }
         }
         return newDict
@@ -248,11 +253,10 @@ class StatisticsDetailVC: UIViewController {
         dataSet.colors = [ChartColorTemplates.colorFromString("#BCBABE"),ChartColorTemplates.colorFromString("#F1F1F2"),
                           ChartColorTemplates.colorFromString("#A1D6E2"),ChartColorTemplates.colorFromString("#1995AD")]
         dataSet.stackLabels = arrayOfAgesLabels
-
+      
         let pieData =  BarChartData(xVals: [""], dataSet: dataSet)
         pieData.setValueTextColor(UIColor.clearColor())
         noiceData.data = pieData
-        
         noiceData.drawGridBackgroundEnabled = false
         noiceData.dragEnabled = false
         noiceData.pinchZoomEnabled = false
@@ -260,7 +264,7 @@ class StatisticsDetailVC: UIViewController {
         noiceData.leftAxis.enabled = false
         noiceData.xAxis.enabled = false
         noiceData.drawValueAboveBarEnabled = false
-        noiceData.legend.position = .BelowChartLeft
+        noiceData.legend.horizontalAlignment = .Center
         noiceData.legend.wordWrapEnabled = true
         noiceData.legend.textColor = UIColor.whiteColor()
         noiceData.legend.font = UIFont.systemFontOfSize(14)
@@ -284,7 +288,7 @@ class StatisticsDetailVC: UIViewController {
         }
         
         let dataSet = BarChartDataSet(yVals: [BarChartDataEntry(values: arrayOfAges, xIndex: 0)], label: "")
-        dataSet.colors = [ChartColorTemplates.colorFromString("#DDBC95"),ChartColorTemplates.colorFromString("#B38867"),ChartColorTemplates.colorFromString("#626D71")]
+        dataSet.colors = [ChartColorTemplates.colorFromString("#DDBC95"),ChartColorTemplates.colorFromString("#B38867"),ChartColorTemplates.colorFromString("#CDCDC0")]
         
         dataSet.stackLabels = arrayOfAgesLabels
         
@@ -299,7 +303,7 @@ class StatisticsDetailVC: UIViewController {
         pieData.setValueFormatter(pFormatter)
         
         genresChart.data = pieData
-        
+//        [_chartView setExtraOffsetsWithLeft:0.f top:50.f right:0.f bottom:50.f];
         genresChart.drawGridBackgroundEnabled = false
         genresChart.dragEnabled = false
         genresChart.pinchZoomEnabled = false
@@ -307,7 +311,7 @@ class StatisticsDetailVC: UIViewController {
         genresChart.leftAxis.enabled = false
         genresChart.xAxis.enabled = false
         genresChart.drawValueAboveBarEnabled = false
-        genresChart.legend.position = .BelowChartLeft
+        genresChart.legend.horizontalAlignment = .Center
         genresChart.legend.wordWrapEnabled = true
         genresChart.legend.textColor = UIColor.whiteColor()
         genresChart.legend.font = UIFont.systemFontOfSize(14)
@@ -317,21 +321,35 @@ class StatisticsDetailVC: UIViewController {
     }
     
 
-    func drawPieChart(chart:PieChartView , data:Dictionary<String,Int>) {
+    func drawPieChart(chart:PieChartView , data:Dictionary<String,Int>, labelStr: String = " ") {
         var arrayOfAges = Array<BarChartDataEntry>()
         var arrayOfAgesLabels = Array<String>()
-        
-        
         var total = 0
         for (_, value) in data {
             total += value
         }
         var index = 0
-        for (key,value) in data{
-            arrayOfAges.append(BarChartDataEntry(value: Double(value), xIndex: index))
-            arrayOfAgesLabels.append(key + " (\(value))")
+        
+        
+        
+        let sortedKeysinterests = data.keys.sort({ (firstKey, secondKey) -> Bool in
+            return data[firstKey] > data[secondKey]
+        })
+        for key in sortedKeysinterests {
+            arrayOfAges.append(BarChartDataEntry(value: Double(data[key]!)/Double(total), xIndex: index))
+            arrayOfAgesLabels.append(key + labelStr + "(\(data[key]!))")
             index += 1
+
         }
+        
+//        
+//        
+//        
+//        for (key,value) in data{
+//            arrayOfAges.append(BarChartDataEntry(value: Double(value)/Double(total), xIndex: index))
+//            arrayOfAgesLabels.append(key + labelStr + "(\(value))")
+//            index += 1
+//        }
             setupPieChart(chart, yValues: arrayOfAges, xValues: arrayOfAgesLabels, centerTextText: "Data set", colors: ChartColorTemplates.liberty(), enableLegend: true)
     }
     
@@ -339,40 +357,25 @@ class StatisticsDetailVC: UIViewController {
     func setupPieChart(pieChart: PieChartView, yValues: Array<BarChartDataEntry>, xValues:  Array<String>,centerTextText:String, colors:[NSUIColor], enableLegend: Bool = false){
         let dataSet = PieChartDataSet(yVals: yValues, label: "")
         dataSet.sliceSpace = 1.0;
-        dataSet.colors = colors
-
+        dataSet.colors = colors + colors + colors
+        dataSet.xValuePosition = .OutsideSlice
         let pieData =  PieChartData(xVals: xValues, dataSet: dataSet)
         
         let pFormatter = NSNumberFormatter()
-        pFormatter.numberStyle = .DecimalStyle
-        pFormatter.maximumFractionDigits = 0
-
-        let charFont = UIFont.systemFontOfSize(12)
+        pFormatter.numberStyle = .PercentStyle
+        pFormatter.maximumFractionDigits = 1
+        pFormatter.percentSymbol = " %"
         pieData.setValueFormatter(pFormatter)
+
+        let charFont = UIFont.systemFontOfSize(13)
         pieData.setValueFont(charFont)
-        pieData.setValueTextColor(UIColor.darkGrayColor())
+        pieData.setValueTextColor(UIColor.whiteColor())
         
-        let centerText = NSMutableAttributedString(
-            string: centerTextText,
-            attributes:nil
-        )
-        centerText.addAttribute(
-            NSForegroundColorAttributeName,
-            value: UIColor.whiteColor(),
-            range: NSRange(location: 0,length: centerTextText.lenght())
-        )
-        centerText.addAttribute(
-            NSFontAttributeName,
-            value: UIFont.systemFontOfSize(15),
-            range: NSRange(location: 0,length: centerTextText.lenght())
-        )
         var allowToRotate = true
         for element in yValues where element.value == 1{ //remove UI bag of rotation chart with 100% value
             allowToRotate = false
             break
         }
-        
-//        pieChart.centerAttributedText = centerText
         
         pieChart.drawHoleEnabled = true
         pieChart.holeColor = UIColor.clearColor()
@@ -382,11 +385,105 @@ class StatisticsDetailVC: UIViewController {
         pieChart.highlightPerTapEnabled = true
         pieChart.data = pieData
         pieChart.descriptionText = ""
-        pieChart.legend.position = .PiechartCenter
+        pieChart.legend.horizontalAlignment = .Left
+        pieChart.legend.drawInside = false
         pieChart.legend.textColor = UIColor.whiteColor()
         pieChart.legend.enabled = enableLegend
         pieChart.legend.wordWrapEnabled = true
         pieChart.legend.font = UIFont.systemFontOfSize(14)
         pieChart.animate(xAxisDuration: 2)
     }
+    
+    func drawBarChart(chart:HorizontalBarChartView , data:Dictionary<String,Int>)  {
+        let pFormatter = NSNumberFormatter()
+        pFormatter.numberStyle = .DecimalStyle
+        
+        chart.noDataText = "Analysis in progress, please wait"
+        chart.legend.wordWrapEnabled = true
+        chart.legend.textColor = UIColor.whiteColor()
+        chart.legend.font = UIFont.systemFontOfSize(14)
+        chart.descriptionText = ""
+        chart.userInteractionEnabled = true
+        chart.leftAxis.axisMinValue = 0.0;
+        chart.leftAxis.drawGridLinesEnabled = true
+        chart.rightAxis.drawGridLinesEnabled = true
+        chart.xAxis.drawGridLinesEnabled = false
+        chart.xAxis.drawAxisLineEnabled = true
+        chart.drawGridBackgroundEnabled = false
+        chart.dragEnabled = true
+        chart.pinchZoomEnabled = true
+        chart.rightAxis.enabled = false
+        chart.leftAxis.enabled = true
+        chart.xAxis.enabled = true
+        chart.leftAxis.labelPosition = .OutsideChart
+        chart.leftAxis.labelTextColor = UIColor.whiteColor()
+        chart.xAxis.labelPosition = .Bottom
+        chart.xAxis.labelTextColor = UIColor.whiteColor()
+        chart.legend.horizontalAlignment = .Center
+        chart.leftAxis.valueFormatter = pFormatter
+
+        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), {
+                var arrayOfAgesLabels = Array<String>()
+                var entyties = Array<BarChartDataEntry>()
+                var totalDeleted = 0
+                for (_, value) in data {
+                    totalDeleted += value
+                }
+            
+                var index = 0
+                let sortedKeysinterests = data.keys.sort({ (firstKey, secondKey) -> Bool in
+                    return data[firstKey] > data[secondKey]
+                })
+                    
+                var top5Keys = Array<String>()
+                for key in sortedKeysinterests {
+                    top5Keys.append(key)
+                    index += 1
+                    if index >= 10 {break}
+                }
+                index = 0
+                for key in top5Keys.reverse() {
+                    var maleCount:Double = 0
+                    var femaleCount:Double = 0
+                    var unknownCount:Double = 0
+                    for user in self.collectedDataSet {
+                        for interest in user.interests where interest == key{
+                            switch user.sex {
+                            case .Female:
+                                femaleCount += 1
+                                break
+                            case .Male:
+                                maleCount += 1
+                                break
+                            case .Unknown:
+                                unknownCount += 1
+                                break
+                            }
+                        }
+                    }
+//                    print("key  \(key)  value  = \(data[key]!)   calculated = \(maleCount + femaleCount + unknownCount)")
+                    if maleCount + femaleCount + unknownCount == 0 { continue }
+                    entyties.insert((BarChartDataEntry(values: [femaleCount,maleCount, unknownCount], xIndex: index)), atIndex: 0)
+                    arrayOfAgesLabels.append(key + " (\(data[key]!))")
+                    index += 1
+                    if index >= 10 {break}
+                }
+            
+        dispatch_async(dispatch_get_main_queue(), {
+
+                let dataSet = BarChartDataSet(yVals: entyties, label: "")
+                dataSet.colors = [ChartColorTemplates.colorFromString("#DDBC95"),ChartColorTemplates.colorFromString("#B38867"),ChartColorTemplates.colorFromString("#CDCDC0")]
+                dataSet.stackLabels = ["Female", "Male", "Unknown"]
+                dataSet.drawValuesEnabled = false
+            
+                let pieData =  BarChartData(xVals: arrayOfAgesLabels, dataSet: dataSet)
+                pieData.setValueTextColor(UIColor.whiteColor())
+                pieData.setValueFormatter(pFormatter)
+
+                chart.data = pieData
+                chart.animate(xAxisDuration: 2, yAxisDuration: 2)
+                });
+        });
+    }
+    
 }

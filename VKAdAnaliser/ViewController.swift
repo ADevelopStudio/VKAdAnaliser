@@ -228,6 +228,9 @@ class ViewController: UIViewController {
                 self.picker.reloadAllComponents()
                 self.picker.selectRow(metadata.arrayValue.count/2, inComponent: 0, animated: true)
                 self.setActive(true)
+                //TODO
+                self.searchGroups(1, sortType: 3, text: "путешествия")
+
                 }, errorBlock: {error in
                     self.showVKError(error.vkError)
                     print("error \(error)")
@@ -236,7 +239,6 @@ class ViewController: UIViewController {
     }
     
     @IBAction func startPressed(sender: AnyObject) {
-        KVNProgress.showWithStatus("Collecting data")
         self.prepareToSearch(categories[picker.selectedRowInComponent(0)].name)
 //TODO
 //        translateEnToRu(categories[picker.selectedRowInComponent(0)].name)
@@ -294,6 +296,8 @@ class ViewController: UIViewController {
     }
     
     func searchGroups(numOfGroups:Int, sortType:Int, text: String) {
+        KVNProgress.showWithStatus("Collecting data")
+
         users = []
         collectedDataSet = []
         
