@@ -21,6 +21,9 @@ class StatisticsDetailVC: UIViewController {
     @IBOutlet weak var relatioshipChart: PieChartView!
     @IBOutlet weak var platformChart: PieChartView!
     
+    @IBOutlet weak var segmenter: UISegmentedControl!
+    @IBOutlet weak var mainStatBubleChart: BubbleChartView!
+    
     var isAnalised = false
     @IBOutlet weak var scroller: UIScrollView!
     
@@ -421,6 +424,34 @@ class StatisticsDetailVC: UIViewController {
         chart.xAxis.labelTextColor = UIColor.whiteColor()
         chart.legend.horizontalAlignment = .Center
         chart.leftAxis.valueFormatter = pFormatter
+        
+        
+        
+        mainStatBubleChart.noDataText = "Analysis in progress, please wait"
+        mainStatBubleChart.legend.wordWrapEnabled = true
+        mainStatBubleChart.legend.textColor = UIColor.whiteColor()
+        mainStatBubleChart.legend.font = UIFont.systemFontOfSize(14)
+        mainStatBubleChart.descriptionText = ""
+        mainStatBubleChart.userInteractionEnabled = true
+        mainStatBubleChart.leftAxis.axisMinValue = 0.0;
+        mainStatBubleChart.leftAxis.drawGridLinesEnabled = true
+        mainStatBubleChart.rightAxis.drawGridLinesEnabled = true
+        mainStatBubleChart.xAxis.drawGridLinesEnabled = true
+        mainStatBubleChart.xAxis.drawAxisLineEnabled = true
+        mainStatBubleChart.drawGridBackgroundEnabled = false
+        mainStatBubleChart.dragEnabled = true
+        mainStatBubleChart.pinchZoomEnabled = true
+        mainStatBubleChart.rightAxis.enabled = false
+        mainStatBubleChart.leftAxis.enabled = false
+        mainStatBubleChart.xAxis.enabled = true
+        mainStatBubleChart.leftAxis.labelPosition = .OutsideChart
+        mainStatBubleChart.leftAxis.labelTextColor = UIColor.whiteColor()
+        mainStatBubleChart.xAxis.labelPosition = .Bottom
+        mainStatBubleChart.xAxis.labelTextColor = UIColor.whiteColor()
+        mainStatBubleChart.legend.horizontalAlignment = .Center
+        mainStatBubleChart.leftAxis.valueFormatter = pFormatter
+        
+        
 
         dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), {
                 var arrayOfAgesLabels = Array<String>()
@@ -442,12 +473,49 @@ class StatisticsDetailVC: UIViewController {
                     if index >= 10 {break}
                 }
                 index = 0
+            
+            //Second graph
+             let arrayOfKeys = ["0-12", "13-18", "19-30", "31-40", "41-60" , "61+", "unknown"]
+             var wholeGraph2Data = Array<Dictionary<String,Int>>()
+            
                 for key in top5Keys.reverse() {
                     var maleCount:Double = 0
                     var femaleCount:Double = 0
                     var unknownCount:Double = 0
+                    var age2 = Dictionary<String,Int>()
+                    
                     for user in self.collectedDataSet {
                         for interest in user.interests where interest == key{
+                            
+                            //Second graph
+                            var ageInterval = "unknown"
+                            if user.age > 0 && user.age <= 12 {
+                                ageInterval = "0-12"
+                            }
+                            if user.age > 12 && user.age <= 18 {
+                                ageInterval = "13-18"
+                            }
+                            if user.age > 18 && user.age <= 30 {
+                                ageInterval = "19-30"
+                            }
+                            if user.age > 30 && user.age <= 40 {
+                                ageInterval = "31-40"
+                            }
+                            if user.age > 40 && user.age <= 60 {
+                                ageInterval = "41-60"
+                            }
+                            if user.age > 60 {
+                                ageInterval = "61+"
+                            }
+                            
+                            age2[ageInterval] = (age2[ageInterval] ?? 0) + 1
+//                            if age2[ageInterval] != nil {
+//                                age2[ageInterval]!  += 1
+//                            } else {
+//                                age2[ageInterval] = 1
+//                            }
+                            //EndOfSecond
+                            
                             switch user.sex {
                             case .Female:
                                 femaleCount += 1
@@ -461,8 +529,14 @@ class StatisticsDetailVC: UIViewController {
                             }
                         }
                     }
-//                    print("key  \(key)  value  = \(data[key]!)   calculated = \(maleCount + femaleCount + unknownCount)")
-                    if maleCount + femaleCount + unknownCount == 0 { continue }
+                    
+                    print("key  \(key)  value  = \(data[key]!)   calculated = \(maleCount + femaleCount + unknownCount)")
+//                    if maleCount + femaleCount + unknownCount == 0 { continue }
+
+                    for index in 0..<arrayOfKeys.count {
+                        print("\(arrayOfKeys[index]) \(age2[arrayOfKeys[index]] ?? 0)")
+                    }
+                    wholeGraph2Data.append(age2)
                     entyties.insert((BarChartDataEntry(values: [femaleCount,maleCount, unknownCount], xIndex: index)), atIndex: 0)
                     arrayOfAgesLabels.append(key + " (\(data[key]!))")
                     index += 1
@@ -482,8 +556,43 @@ class StatisticsDetailVC: UIViewController {
 
                 chart.data = pieData
                 chart.animate(xAxisDuration: 2, yAxisDuration: 2)
+            
+                //Second graph dwawing
+
+             var secondDataSet = Array<BubbleChartDataSet>()
+            
+            for mainIndex2 in 0..<top5Keys.reverse().count {
+                print(top5Keys.reverse()[mainIndex2])
+                print(wholeGraph2Data[mainIndex2].keys)
+                index = 0
+                var yVals = Array<BubbleChartDataEntry>()
+                for keyDict in arrayOfKeys {
+                    print("key =\(keyDict)")
+                    for dataKey in wholeGraph2Data[mainIndex2].keys where dataKey == keyDict {
+                        print("value :\(wholeGraph2Data[mainIndex2][dataKey]) index \(index)")
+                        yVals.append(BubbleChartDataEntry(xIndex: index, value: Double((mainIndex2 * 10) + 10), size: CGFloat(wholeGraph2Data[mainIndex2][dataKey]!)))
+
+                    }
+                    index += 1
+                }
+                let dataset22 = BubbleChartDataSet(yVals: yVals, label: top5Keys.reverse()[mainIndex2])
+                let colors22 = ChartColorTemplates.colorful() + ChartColorTemplates.joyful() + ChartColorTemplates.colorful()
+                dataset22.setColor(colors22[mainIndex2], alpha: 0.7)
+                dataset22.drawValuesEnabled = true
+                secondDataSet.append(dataset22)
+            }
+                    
+            let data2 = BubbleChartData(xVals: arrayOfKeys, dataSets: secondDataSet)
+            data2.setValueTextColor(UIColor.whiteColor())
+            data2.setValueFormatter(pFormatter)
+            self.mainStatBubleChart.data = data2
+            self.mainStatBubleChart.animate(xAxisDuration: 2)
+
                 });
         });
     }
     
+    @IBAction func segmenterPressed(sender: AnyObject) {
+        
+    }
 }
