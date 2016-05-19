@@ -126,8 +126,7 @@ class ViewController: UIViewController {
         
         let title = NSAttributedString(string: "VKAdAnaliser \(NSBundle.mainBundle().infoDictionary!["CFBundleShortVersionString"]!)", attributes: [NSFontAttributeName: UIFont.systemFontOfSize(15), NSForegroundColorAttributeName: originalBlue, NSParagraphStyleAttributeName: paragraphStyle])
         
-        let lineOne = NSAttributedString(string: "You need to connect to VKontakte", attributes: [NSFontAttributeName:UIFont.systemFontOfSize(17), NSParagraphStyleAttributeName: paragraphStyle])
-        let lineTwo = NSAttributedString(string: "or register", attributes: [NSFontAttributeName: UIFont.systemFontOfSize(14), NSForegroundColorAttributeName: originalDarkGrey, NSParagraphStyleAttributeName: paragraphStyle2])
+        let lineOne = NSAttributedString(string: "You need to login to VK.com\nor register", attributes: [NSFontAttributeName:UIFont.systemFontOfSize(17), NSParagraphStyleAttributeName: paragraphStyle])
         
         let button = CNPPopupButton()
         button.clipsToBounds = true
@@ -137,7 +136,7 @@ class ViewController: UIViewController {
         button.layer.borderWidth = 2
         button.frame =  CGRectMake(0, 0, 200, 50)
         button.titleLabel?.font = UIFont.systemFontOfSize(17)
-        button.setTitle("Поехали!", forState: UIControlState.Normal)
+        button.setTitle("Let's go!", forState: UIControlState.Normal)
         button.selectionHandler = { (button) -> Void in
             self.popupController.dismissPopupControllerAnimated(true)
             defaults.setBool(true, forKey: "alreadyLaunched")
@@ -159,15 +158,11 @@ class ViewController: UIViewController {
         imageView.frame = CGRect(x: 0, y: 0, width: 70, height: 70)
         imageView.backgroundColor = originalBlue
         
-        let imageViewLogo = UIImageView.init(image: UIImage.init(named: "logo"))
+        let imageViewLogo = UIImageView.init(image: UIImage.init(named: "graph"))
         imageViewLogo.frame = CGRect(x: 10, y: 10, width: 50, height: 50)
         imageView.addSubview(imageViewLogo)
         
-        let lineTwoLabel = UILabel()
-        lineTwoLabel.numberOfLines = 0;
-        lineTwoLabel.attributedText = lineTwo;
-        
-        self.popupController = CNPPopupController(contents:[titleLabel,imageView, lineOneLabel, lineTwoLabel, button])
+        self.popupController = CNPPopupController(contents:[titleLabel,imageView, lineOneLabel, button])
         let themeP = CNPPopupTheme.defaultTheme()
         themeP.shouldDismissOnBackgroundTouch = false
         self.popupController.theme = themeP
