@@ -223,13 +223,13 @@ class ViewController: UIViewController {
                 for element in metadata.arrayValue {
                     self.categories.append(DZCategory(json: element))
                 }
-//                print(metadata)
+                print(metadata)
                 print("self.categories.count = \(self.categories.count)")
                 self.picker.reloadAllComponents()
                 self.picker.selectRow(metadata.arrayValue.count/2, inComponent: 0, animated: true)
                 self.setActive(true)
                 //TODO
-                self.searchGroups(1, sortType: 3, text: "путешествия")
+//                self.searchGroups(1, sortType: 3, text: "путешествия")
 
                 }, errorBlock: {error in
                     self.showVKError(error.vkError)
@@ -239,13 +239,33 @@ class ViewController: UIViewController {
     }
     
     @IBAction func startPressed(sender: AnyObject) {
-        self.prepareToSearch(categories[picker.selectedRowInComponent(0)].name)
-//TODO
-//        translateEnToRu(categories[picker.selectedRowInComponent(0)].name)
+        let triedToTralslated = translateWorld(categories[picker.selectedRowInComponent(0)].name, toEng: false)
+        if categories[picker.selectedRowInComponent(0)].name.lowercaseString == triedToTralslated.lowercaseString {
+            translateEnToRu(categories[picker.selectedRowInComponent(0)].name)
+        } else {
+            self.prepareToSearch(triedToTralslated.lowercaseString)
+        }
+    }
+    
+    func translateWorld(str:String, toEng: Bool = true) -> String {
+        for element in englishDict {
+//            print(element.eng)
+            if toEng {
+                if element.rus == str {
+                    return element.eng
+                }
+            } else {
+                if element.eng == str {
+                    return element.rus
+                }
+            }
+        }
+        return str
     }
 
 
     func translateEnToRu(str:String) {
+        print("ONLINE TRANSLATE")
         let preparedStr = prepareToWeb(str)
         Alamofire.request(.POST, "https://translate.yandex.net/api/v1.5/tr.json/translate?key=trnsl.1.1.20160506T134111Z.4dd20cfcbd113ddf.a694898a4b4162d5c87616fb823ba675f6328278&text=\(preparedStr)&lang=en-ru", parameters: nil, encoding: .JSON)
             .responseJSON{
@@ -278,7 +298,7 @@ class ViewController: UIViewController {
          5 — ratio: num of post per one user .
          */
         prepareToWeb("searchTExt  = \(text)")
-        searchGroups(1, sortType: 3, text: text)
+        searchGroups(5, sortType: 0, text: text)
     }
     
     func prepareToWeb(input: String) -> String {
@@ -297,13 +317,13 @@ class ViewController: UIViewController {
     
     func searchGroups(numOfGroups:Int, sortType:Int, text: String) {
         KVNProgress.showWithStatus("Collecting data")
-
         users = []
         collectedDataSet = []
-        
+        numberOfOperationCompleted = 0
         let request =  VKRequest(method: "groups.search", parameters: ["q": text, "type":"group", "sort":"\(sortType)" , "count": "\(numOfGroups)"])
         request.executeWithResultBlock({ response in
             print("Success groups.search")
+            KVNProgress.updateProgress(0.01, animated: true)
             let metadata = JSON(response.json)
             print(metadata)
             self.numOfDownloadedUserSets = metadata["items"].arrayValue.count

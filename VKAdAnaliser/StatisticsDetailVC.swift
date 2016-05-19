@@ -11,21 +11,34 @@ import Alamofire
 import Charts
 
 class StatisticsDetailVC: UIViewController {
-    var collectedDataSet = Array<User>()
-    var reasonsToRemove = Dictionary<String,Int>()
 
+    @IBOutlet weak var unknownAgeSwitcher: UISwitch!
+    @IBOutlet weak var unknownRelationshipSwitcher: UISwitch!
     @IBOutlet weak var interestsChart: HorizontalBarChartView!
     @IBOutlet weak var genresChart: HorizontalBarChartView!
     @IBOutlet weak var noiceData: HorizontalBarChartView!
     @IBOutlet weak var agesChart: PieChartView!
     @IBOutlet weak var relatioshipChart: PieChartView!
     @IBOutlet weak var platformChart: PieChartView!
-    
     @IBOutlet weak var segmenter: UISegmentedControl!
     @IBOutlet weak var mainStatBubleChart: BubbleChartView!
+    @IBOutlet weak var scroller: UIScrollView!
+    @IBOutlet weak var resultKeys: UILabel!
+    @IBOutlet weak var resultAge: UILabel!
+    @IBOutlet weak var resultGender: UILabel!
+    
+    var collectedDataSet = Array<User>()
+    var reasonsToRemove = Dictionary<String,Int>()
     
     var isAnalised = false
-    @IBOutlet weak var scroller: UIScrollView!
+    var maximumInterest = 0
+    var occupation = Dictionary<String,Int>()
+    var age = Dictionary<String,Int>()
+    var sex = Dictionary<String,Int>()
+    var relation = Dictionary<String,Int>()
+    var activities = Dictionary<String,Int>()
+    var interests = Dictionary<String,Int>()
+    var platforms = Dictionary<String,Int>()
     
     override func viewDidLoad() {
         
@@ -44,13 +57,6 @@ class StatisticsDetailVC: UIViewController {
     }
     
     func caltulateStat(){
-        var occupation = Dictionary<String,Int>()
-        var age = Dictionary<String,Int>()
-        var sex = Dictionary<String,Int>()
-        var relation = Dictionary<String,Int>()
-        var activities = Dictionary<String,Int>()
-        var interests = Dictionary<String,Int>()
-        var platforms = Dictionary<String,Int>()
 
         for user in collectedDataSet {
             if occupation[user.occupation] != nil {
@@ -66,8 +72,11 @@ class StatisticsDetailVC: UIViewController {
             if user.age > 12 && user.age <= 18 {
                 ageInterval = "13-18"
             }
-            if user.age > 18 && user.age <= 30 {
-                ageInterval = "19-30"
+            if user.age > 18 && user.age <= 24 {
+                ageInterval = "19-24"
+            }
+            if user.age > 24 && user.age <= 30 {
+                ageInterval = "25-30"
             }
             if user.age > 30 && user.age <= 40 {
                 ageInterval = "31-40"
@@ -140,7 +149,7 @@ class StatisticsDetailVC: UIViewController {
         drawGenresDataChart(sex)
         
         self.drawBarChart(self.interestsChart, data: interests)
-        self.drawPieChart(self.agesChart, data: age, labelStr: " y.o. ")
+        self.drawPieChart(self.agesChart, data: age, isAge: true)
         self.drawPieChart(self.relatioshipChart, data: relation)
     
     }
@@ -161,9 +170,8 @@ class StatisticsDetailVC: UIViewController {
         // remove all data less than 1 percent of all dataset
         var newDict = Dictionary<String,Int>()
         for (key, value) in dict {
-            if value > (collectedDataSet.count / 100) && containsOnlyLetters(key) {
+            if value > (collectedDataSet.count / 100) && containsOnlyLetters(key) && key != "музыка" {
                 newDict[key] = value
-//                newDict[translateWorld(key)] = value
             }
         }
         return newDict
@@ -233,6 +241,16 @@ class StatisticsDetailVC: UIViewController {
     }
     
  
+    @IBAction func unknownAgePressed(sender: AnyObject) {
+        self.drawPieChart(self.agesChart, data: age, needToShowUnknown: unknownAgeSwitcher.on, isAge: true)
+    }
+    
+    @IBAction func unknownRelationshipPressed(sender: AnyObject) {
+        self.drawPieChart(self.relatioshipChart, data: relation, needToShowUnknown: unknownRelationshipSwitcher.on)
+    }
+    
+    
+    
     //Charts
     
     func drawNoiceDataChart()  {
@@ -306,7 +324,6 @@ class StatisticsDetailVC: UIViewController {
         pieData.setValueFormatter(pFormatter)
         
         genresChart.data = pieData
-//        [_chartView setExtraOffsetsWithLeft:0.f top:50.f right:0.f bottom:50.f];
         genresChart.drawGridBackgroundEnabled = false
         genresChart.dragEnabled = false
         genresChart.pinchZoomEnabled = false
@@ -321,39 +338,73 @@ class StatisticsDetailVC: UIViewController {
         genresChart.descriptionText = ""
         genresChart.userInteractionEnabled = false
         genresChart.animate(yAxisDuration: 2)
+
+        //For conclusion:
+        var numOfFemale:Double = 0
+        var numOfMale:Double = 0
+        for (key,value) in ar where key == User.Sex.Female.name{
+            numOfFemale = Double(value)
+        }
+        for (key,value) in ar where key == User.Sex.Male.name{
+            numOfMale = Double(value)
+        }
+        
+        resultGender.text = numOfFemale > numOfMale ? ("Genger: \((numOfFemale > numOfMale * 1.5) ? User.Sex.Female.name : "Both")" ) : ("Genger: \((numOfMale > numOfFemale * 1.3) ? User.Sex.Male.name : "Both")")
+
     }
     
 
-    func drawPieChart(chart:PieChartView , data:Dictionary<String,Int>, labelStr: String = " ") {
+
+    func drawPieChart(chart:PieChartView , data:Dictionary<String,Int>, needToShowUnknown: Bool = true, isAge: Bool = false) {
         var arrayOfAges = Array<BarChartDataEntry>()
         var arrayOfAgesLabels = Array<String>()
+        
         var total = 0
-        for (_, value) in data {
+        for (key , value) in data {
+            if needToShowUnknown || key.lowercaseString != "unknown"{
             total += value
+            }
         }
         var index = 0
-        
-        
-        
+
         let sortedKeysinterests = data.keys.sort({ (firstKey, secondKey) -> Bool in
             return data[firstKey] > data[secondKey]
         })
         for key in sortedKeysinterests {
+            if !needToShowUnknown && key.lowercaseString == "unknown" {continue}
             arrayOfAges.append(BarChartDataEntry(value: Double(data[key]!)/Double(total), xIndex: index))
-            arrayOfAgesLabels.append(key + labelStr + "(\(data[key]!))")
+            arrayOfAgesLabels.append(key + (isAge ? " y.o." : "") + "(\(data[key]!))")
             index += 1
 
         }
         
-//        
-//        
-//        
-//        for (key,value) in data{
-//            arrayOfAges.append(BarChartDataEntry(value: Double(value)/Double(total), xIndex: index))
-//            arrayOfAgesLabels.append(key + labelStr + "(\(value))")
-//            index += 1
-//        }
-            setupPieChart(chart, yValues: arrayOfAges, xValues: arrayOfAgesLabels, centerTextText: "Data set", colors: ChartColorTemplates.liberty(), enableLegend: true)
+        setupPieChart(chart, yValues: arrayOfAges, xValues: arrayOfAgesLabels, centerTextText: "Data set", colors: ChartColorTemplates.liberty(), enableLegend: true)
+       
+        //Conclusion
+        if isAge {
+            var index =  0
+            var firstValue = 0
+            var firstKey = ""
+            var secondValue = 0
+            var secondKey = ""
+            var unknownValue = 0
+            for key in sortedKeysinterests {
+                if  key.lowercaseString != "unknown" {
+                    if index == 0 {
+                        firstValue = data[key]!
+                        firstKey = key
+                    } else {
+                        secondValue = data[key]!
+                        secondKey = key
+                    }
+                    index += 1
+                    if index == 2 {break}
+                } else {
+                    unknownValue =  data[key]!
+                }
+            }
+            resultAge.text = "Age: \((firstValue > Int(Double(secondValue) * 1.3)) ? firstKey: " \(firstKey), \(secondKey)")" + "\((unknownValue > (firstValue + secondValue)) ? " or without age" : "")"
+        }
     }
     
     
@@ -426,7 +477,6 @@ class StatisticsDetailVC: UIViewController {
         chart.leftAxis.valueFormatter = pFormatter
         
         
-        
         mainStatBubleChart.noDataText = "Analysis in progress, please wait"
         mainStatBubleChart.legend.wordWrapEnabled = true
         mainStatBubleChart.legend.textColor = UIColor.whiteColor()
@@ -434,6 +484,7 @@ class StatisticsDetailVC: UIViewController {
         mainStatBubleChart.descriptionText = ""
         mainStatBubleChart.userInteractionEnabled = true
         mainStatBubleChart.leftAxis.axisMinValue = 0.0;
+        mainStatBubleChart.xAxis.axisMaxValue = 100.0;
         mainStatBubleChart.leftAxis.drawGridLinesEnabled = true
         mainStatBubleChart.rightAxis.drawGridLinesEnabled = true
         mainStatBubleChart.xAxis.drawGridLinesEnabled = true
@@ -442,13 +493,14 @@ class StatisticsDetailVC: UIViewController {
         mainStatBubleChart.dragEnabled = true
         mainStatBubleChart.pinchZoomEnabled = true
         mainStatBubleChart.rightAxis.enabled = false
-        mainStatBubleChart.leftAxis.enabled = false
+        mainStatBubleChart.leftAxis.enabled = true
         mainStatBubleChart.xAxis.enabled = true
         mainStatBubleChart.leftAxis.labelPosition = .OutsideChart
         mainStatBubleChart.leftAxis.labelTextColor = UIColor.whiteColor()
         mainStatBubleChart.xAxis.labelPosition = .Bottom
         mainStatBubleChart.xAxis.labelTextColor = UIColor.whiteColor()
-        mainStatBubleChart.legend.horizontalAlignment = .Center
+        mainStatBubleChart.legend.horizontalAlignment = .Left
+        mainStatBubleChart.legend.verticalAlignment = .Bottom
         mainStatBubleChart.leftAxis.valueFormatter = pFormatter
         
         
@@ -474,9 +526,77 @@ class StatisticsDetailVC: UIViewController {
                 }
                 index = 0
             
+            //Conclusion
+            var indexKey =  0
+            var firstValue = 0
+            var firstKey = ""
+            var secondValue = 0
+            var secondKey = ""
+            
+            for key in top5Keys{
+                if indexKey == 0 {
+                    firstValue = data[key]!
+                    firstKey = self.translateWorld(key)
+                } else {
+                    secondValue = data[key]!
+                    secondKey = self.translateWorld(key)
+                }
+                indexKey += 1
+                if indexKey == 2 {break}
+            }
+
+            self.resultKeys.text = "Keyworlds: \((firstValue >= Int(Double(secondValue) * 1.2)) ? firstKey : " \(firstKey), \(secondKey)")"
+            //End Of conclusion
+            
+            
+            
             //Second graph
-             let arrayOfKeys = ["0-12", "13-18", "19-30", "31-40", "41-60" , "61+", "unknown"]
+            let arrayOfKeys = ["0-12", "13-18", "19-24", "25-30", "31-40", "41-60" , "61+", "unknown","ignore this"]
              var wholeGraph2Data = Array<Dictionary<String,Int>>()
+            
+            //Getting max num Of Inetersts = 
+            var ageMax = Dictionary<String,Int>()
+            for key in top5Keys.reverse() {
+                var ageTest = Dictionary<String,Int>()
+                for user in self.collectedDataSet {
+                    for interest in user.interests where interest == key
+                    {
+                        var ageInterval = "unknown"
+                        if user.age > 0 && user.age <= 12 {
+                            ageInterval = "0-12"
+                        }
+                        if user.age > 12 && user.age <= 18 {
+                            ageInterval = "13-18"
+                        }
+                        if user.age > 18 && user.age <= 24 {
+                            ageInterval = "19-24"
+                        }
+                        if user.age > 24 && user.age <= 30 {
+                            ageInterval = "25-30"
+                        }
+                        if user.age > 30 && user.age <= 40 {
+                            ageInterval = "31-40"
+                        }
+                        if user.age > 40 && user.age <= 60 {
+                            ageInterval = "41-60"
+                        }
+                        if user.age > 60 {
+                            ageInterval = "61+"
+                        }
+//                        if ageInterval != "unknown" {
+                            ageTest[ageInterval] = (ageTest[ageInterval] ?? 0) + 1
+//                        }
+                    }
+                }
+                var max = 0
+                for (_, value) in ageTest {
+                    if max < value { max = value }
+                }
+                ageMax[key] = max
+            }
+            
+            for (_, value) in ageMax { if self.maximumInterest < value { self.maximumInterest = value } }
+            //END OF Getting max num Of Inetersts =
             
                 for key in top5Keys.reverse() {
                     var maleCount:Double = 0
@@ -485,8 +605,8 @@ class StatisticsDetailVC: UIViewController {
                     var age2 = Dictionary<String,Int>()
                     
                     for user in self.collectedDataSet {
-                        for interest in user.interests where interest == key{
-                            
+                        for interest in user.interests where interest == key
+                        {
                             //Second graph
                             var ageInterval = "unknown"
                             if user.age > 0 && user.age <= 12 {
@@ -495,8 +615,11 @@ class StatisticsDetailVC: UIViewController {
                             if user.age > 12 && user.age <= 18 {
                                 ageInterval = "13-18"
                             }
-                            if user.age > 18 && user.age <= 30 {
-                                ageInterval = "19-30"
+                            if user.age > 18 && user.age <= 24 {
+                                ageInterval = "19-24"
+                            }
+                            if user.age > 24 && user.age <= 30 {
+                                ageInterval = "25-30"
                             }
                             if user.age > 30 && user.age <= 40 {
                                 ageInterval = "31-40"
@@ -507,13 +630,8 @@ class StatisticsDetailVC: UIViewController {
                             if user.age > 60 {
                                 ageInterval = "61+"
                             }
-                            
+                            age2["ignore this"] = self.maximumInterest
                             age2[ageInterval] = (age2[ageInterval] ?? 0) + 1
-//                            if age2[ageInterval] != nil {
-//                                age2[ageInterval]!  += 1
-//                            } else {
-//                                age2[ageInterval] = 1
-//                            }
                             //EndOfSecond
                             
                             switch user.sex {
@@ -538,10 +656,11 @@ class StatisticsDetailVC: UIViewController {
                     }
                     wholeGraph2Data.append(age2)
                     entyties.insert((BarChartDataEntry(values: [femaleCount,maleCount, unknownCount], xIndex: index)), atIndex: 0)
-                    arrayOfAgesLabels.append(key + " (\(data[key]!))")
+                    arrayOfAgesLabels.append(self.translateWorld(key) + " (\(data[key]!))")
                     index += 1
                     if index >= 10 {break}
                 }
+            
             
         dispatch_async(dispatch_get_main_queue(), {
 
@@ -557,37 +676,38 @@ class StatisticsDetailVC: UIViewController {
                 chart.data = pieData
                 chart.animate(xAxisDuration: 2, yAxisDuration: 2)
             
-                //Second graph dwawing
-
+                //Second graph drawing
              var secondDataSet = Array<BubbleChartDataSet>()
-            
+
             for mainIndex2 in 0..<top5Keys.reverse().count {
                 print(top5Keys.reverse()[mainIndex2])
                 print(wholeGraph2Data[mainIndex2].keys)
                 index = 0
                 var yVals = Array<BubbleChartDataEntry>()
                 for keyDict in arrayOfKeys {
-                    print("key =\(keyDict)")
+                    print("key = \(keyDict)")
                     for dataKey in wholeGraph2Data[mainIndex2].keys where dataKey == keyDict {
-                        print("value :\(wholeGraph2Data[mainIndex2][dataKey]) index \(index)")
-                        yVals.append(BubbleChartDataEntry(xIndex: index, value: Double((mainIndex2 * 10) + 10), size: CGFloat(wholeGraph2Data[mainIndex2][dataKey]!)))
-
+                        print("value : \(wholeGraph2Data[mainIndex2][dataKey]!) index \(index)")
+                        yVals.append(BubbleChartDataEntry(xIndex: index, value: Double((mainIndex2 ) + 1), size: CGFloat(wholeGraph2Data[mainIndex2][dataKey]!)))
                     }
                     index += 1
                 }
-                let dataset22 = BubbleChartDataSet(yVals: yVals, label: top5Keys.reverse()[mainIndex2])
+                let dataset22 = BubbleChartDataSet(yVals: yVals, label: ("\(mainIndex2+1)." + self.translateWorld(top5Keys.reverse()[mainIndex2])))
                 let colors22 = ChartColorTemplates.colorful() + ChartColorTemplates.joyful() + ChartColorTemplates.colorful()
                 dataset22.setColor(colors22[mainIndex2], alpha: 0.7)
                 dataset22.drawValuesEnabled = true
                 secondDataSet.append(dataset22)
             }
-                    
-            let data2 = BubbleChartData(xVals: arrayOfKeys, dataSets: secondDataSet)
+            
+            var labeledKeys = Array<String>()
+            for key in arrayOfKeys {
+                labeledKeys.append(key  + (key != "ignore this" ? " y.o.":""))
+            }
+            let data2 = BubbleChartData(xVals: labeledKeys, dataSets: secondDataSet)
             data2.setValueTextColor(UIColor.whiteColor())
             data2.setValueFormatter(pFormatter)
             self.mainStatBubleChart.data = data2
             self.mainStatBubleChart.animate(xAxisDuration: 2)
-
                 });
         });
     }
