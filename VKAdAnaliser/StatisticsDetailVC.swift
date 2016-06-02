@@ -339,6 +339,7 @@ class StatisticsDetailVC: UIViewController {
         genresChart.userInteractionEnabled = false
         genresChart.animate(yAxisDuration: 2)
 
+        
         //For conclusion:
         var numOfFemale:Double = 0
         var numOfMale:Double = 0
@@ -518,9 +519,9 @@ class StatisticsDetailVC: UIViewController {
                     return data[firstKey] > data[secondKey]
                 })
                     
-                var top5Keys = Array<String>()
+                var top10Keys = Array<String>()
                 for key in sortedKeysinterests {
-                    top5Keys.append(key)
+                    top10Keys.append(key)
                     index += 1
                     if index >= 10 {break}
                 }
@@ -533,7 +534,7 @@ class StatisticsDetailVC: UIViewController {
             var secondValue = 0
             var secondKey = ""
             
-            for key in top5Keys{
+            for key in top10Keys{
                 if indexKey == 0 {
                     firstValue = data[key]!
                     firstKey = self.translateWorld(key)
@@ -556,7 +557,7 @@ class StatisticsDetailVC: UIViewController {
             
             //Getting max num Of Inetersts = 
             var ageMax = Dictionary<String,Int>()
-            for key in top5Keys.reverse() {
+            for key in top10Keys.reverse() {
                 var ageTest = Dictionary<String,Int>()
                 for user in self.collectedDataSet {
                     for interest in user.interests where interest == key
@@ -598,7 +599,7 @@ class StatisticsDetailVC: UIViewController {
             for (_, value) in ageMax { if self.maximumInterest < value { self.maximumInterest = value } }
             //END OF Getting max num Of Inetersts =
             
-                for key in top5Keys.reverse() {
+                for key in top10Keys.reverse() {
                     var maleCount:Double = 0
                     var femaleCount:Double = 0
                     var unknownCount:Double = 0
@@ -679,8 +680,8 @@ class StatisticsDetailVC: UIViewController {
                 //Second graph drawing
              var secondDataSet = Array<BubbleChartDataSet>()
 
-            for mainIndex2 in 0..<top5Keys.reverse().count {
-                print(top5Keys.reverse()[mainIndex2])
+            for mainIndex2 in 0..<top10Keys.reverse().count {
+                print(top10Keys.reverse()[mainIndex2])
                 print(wholeGraph2Data[mainIndex2].keys)
                 index = 0
                 var yVals = Array<BubbleChartDataEntry>()
@@ -692,7 +693,7 @@ class StatisticsDetailVC: UIViewController {
                     }
                     index += 1
                 }
-                let dataset22 = BubbleChartDataSet(yVals: yVals, label: ("\(mainIndex2+1)." + self.translateWorld(top5Keys.reverse()[mainIndex2])))
+                let dataset22 = BubbleChartDataSet(yVals: yVals, label: ("\(mainIndex2+1)." + self.translateWorld(top10Keys.reverse()[mainIndex2])))
                 let colors22 = ChartColorTemplates.colorful() + ChartColorTemplates.joyful() + ChartColorTemplates.colorful()
                 dataset22.setColor(colors22[mainIndex2], alpha: 0.7)
                 dataset22.drawValuesEnabled = true

@@ -143,8 +143,8 @@
                                             <constraint firstAttribute="height" constant="80" id="vpx-3h-1P5"/>
                                         </constraints>
                                     </view>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Users' genres:" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="to5-ac-Mia">
-                                        <rect key="frame" x="20" y="96" width="560" height="21"/>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Gender:" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="to5-ac-Mia">
+                                        <rect key="frame" x="20" y="96" width="560" height="23"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="21" id="8ne-jX-yju"/>
                                             <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="21" id="Jes-uO-YGD"/>
@@ -158,7 +158,7 @@
                                             </mask>
                                         </variation>
                                     </label>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Users' ages:" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Cmo-Ek-oRE">
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Age:" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Cmo-Ek-oRE">
                                         <rect key="frame" x="20" y="229" width="560" height="21"/>
                                         <constraints>
                                             <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="21" id="GMD-lv-tgk"/>
@@ -173,22 +173,7 @@
                                             </mask>
                                         </variation>
                                     </label>
-                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="St2-7Q-BCc" customClass="PieChartView" customModule="Charts">
-                                        <rect key="frame" x="10" y="950" width="580" height="580"/>
-                                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
-                                        <constraints>
-                                            <constraint firstAttribute="width" secondItem="St2-7Q-BCc" secondAttribute="height" multiplier="1:1" id="VSR-eM-z2D"/>
-                                            <constraint firstAttribute="height" constant="371" id="lYc-kk-seF"/>
-                                            <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="371" id="sWe-ZZ-Ik8"/>
-                                        </constraints>
-                                        <variation key="default">
-                                            <mask key="constraints">
-                                                <exclude reference="lYc-kk-seF"/>
-                                                <exclude reference="sWe-ZZ-Ik8"/>
-                                            </mask>
-                                        </variation>
-                                    </view>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Users' relationships:" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="kUS-LY-amy">
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Relationship:" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="kUS-LY-amy">
                                         <rect key="frame" x="20" y="921" width="560" height="21"/>
                                         <constraints>
                                             <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="21" id="Ohl-B8-jWe"/>
@@ -364,8 +349,8 @@
                                         <nil key="highlightedColor"/>
                                         <variation key="default">
                                             <mask key="constraints">
-                                                <exclude reference="CBG-2M-UbH"/>
                                                 <exclude reference="3Nr-zI-qhw"/>
+                                                <exclude reference="CBG-2M-UbH"/>
                                             </mask>
                                         </variation>
                                     </label>
@@ -381,11 +366,26 @@
                                         <nil key="highlightedColor"/>
                                         <variation key="default">
                                             <mask key="constraints">
-                                                <exclude reference="qJt-Mp-0QR"/>
                                                 <exclude reference="phy-v4-uWZ"/>
+                                                <exclude reference="qJt-Mp-0QR"/>
                                             </mask>
                                         </variation>
                                     </label>
+                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="St2-7Q-BCc" customClass="PieChartView" customModule="Charts">
+                                        <rect key="frame" x="10" y="950" width="580" height="580"/>
+                                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                        <constraints>
+                                            <constraint firstAttribute="width" secondItem="St2-7Q-BCc" secondAttribute="height" multiplier="1:1" id="VSR-eM-z2D"/>
+                                            <constraint firstAttribute="height" constant="371" id="lYc-kk-seF"/>
+                                            <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="371" id="sWe-ZZ-Ik8"/>
+                                        </constraints>
+                                        <variation key="default">
+                                            <mask key="constraints">
+                                                <exclude reference="lYc-kk-seF"/>
+                                                <exclude reference="sWe-ZZ-Ik8"/>
+                                            </mask>
+                                        </variation>
+                                    </view>
                                 </subviews>
                                 <constraints>
                                     <constraint firstItem="xo2-nJ-fI4" firstAttribute="centerX" secondItem="34b-Y3-Kbu" secondAttribute="centerX" id="1BK-CS-1QR"/>

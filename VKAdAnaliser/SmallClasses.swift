@@ -144,7 +144,6 @@ class User: NSObject {
     }
     
     init(json: JSON){
-        //  Maybe  TODO personal, interests" ])
         id = json["id"].stringValue
         if let tempSex = Sex(rawValue: json["sex"].intValue) {
             sex = tempSex
@@ -189,7 +188,7 @@ class User: NSObject {
     }
     
     func isValid() -> (valid:Bool, reason:String){
-        //Remove suspitios users
+        //Remove suspicious users
         if NSDate().timeIntervalSince1970 - last_seen > (60*60*24*180) { //last seen more than 180 days ago
             return (false, "were not online more than 180 days")
         }

@@ -208,24 +208,19 @@ class ViewController: UIViewController {
     
     func getSuggestions()  {
         KVNProgress.showWithStatus("Loading categories")
-
-            let request =  VKRequest(method: "ads.getSuggestions", parameters: ["lang": "ru", "section":"interest_categories"])
+            let request =  VKRequest(method: "ads.getSuggestions", parameters: ["section":"interest_categories"])
             request.executeWithResultBlock({ response in
                 print("Success getSuggestions")
                 self.categories = []
-                
                 let metadata = JSON(response.json)
+                print(metadata)
                 for element in metadata.arrayValue {
                     self.categories.append(DZCategory(json: element))
                 }
-                print(metadata)
                 print("self.categories.count = \(self.categories.count)")
                 self.picker.reloadAllComponents()
                 self.picker.selectRow(metadata.arrayValue.count/2, inComponent: 0, animated: true)
                 self.setActive(true)
-                //TODO
-//                self.searchGroups(1, sortType: 3, text: "путешествия")
-
                 }, errorBlock: {error in
                     self.showVKError(error.vkError)
                     print("error \(error)")
@@ -293,7 +288,7 @@ class ViewController: UIViewController {
          5 — ratio: num of post per one user .
          */
         prepareToWeb("searchTExt  = \(text)")
-        searchGroups(5, sortType: 0, text: text)
+        searchGroups(10, sortType: 0, text: text)
     }
     
     func prepareToWeb(input: String) -> String {
@@ -344,7 +339,7 @@ class ViewController: UIViewController {
             self.oneTackCompleted()
             print("Success getNumberUsersInGroup \(id) -> \(ar.count > 0 ? ar.first!["members_count"].intValue  : 0)")
             if ar.count > 0 && ar.first!["members_count"].intValue > 2500 {
-                self.getUsersInGroup(id, offset: ar.first!["members_count"].intValue - 1500)
+                self.getUsersInGroup(id, offset: (ar.first!["members_count"].intValue/2) - 500)
             } else {
                 self.getUsersInGroup(id)
             }
